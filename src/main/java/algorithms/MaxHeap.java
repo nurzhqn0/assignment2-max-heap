@@ -11,38 +11,52 @@ public class MaxHeap {
     private int capacity;
     private PerformanceTracker tracker;
 
-    public MaxHeap(int capacity){
-        if(capacity <= 0){
-            throw new IllegalArgumentException("Capacity must be greater than 0");
+    public MaxHeap(int capacity) {
+        if (capacity <= 0) {
+            throw new IllegalArgumentException("Capacity must be positive");
         }
-
         this.capacity = capacity;
         this.heap = new int[capacity];
         this.size = 0;
         this.tracker = null;
     }
 
-    public MaxHeap(int capacity, PerformanceTracker tracker){
+    public MaxHeap(int capacity, PerformanceTracker tracker) {
+        if (capacity <= 0) {
+            throw new IllegalArgumentException("Capacity must be positive");
+        }
         this.capacity = capacity;
+        this.heap = new int[capacity];
+        this.size = 0;
         this.tracker = tracker;
     }
 
-    public MaxHeap(int[] arr){
-        if(arr == null || arr.length == 0){
-            throw new IllegalArgumentException("Array must not be null");
+    public MaxHeap(int[] array) {
+        if (array == null) {
+            throw new IllegalArgumentException("Array cannot be null");
         }
-
-        this.capacity = arr.length;
-        this.size = arr.length;
-        this.heap = Arrays.copyOf(arr, arr.length);
+        this.capacity = Math.max(array.length, 1); // Ensure at least capacity of 1
+        this.size = array.length;
+        this.heap = Arrays.copyOf(array, capacity);
         this.tracker = null;
 
-        buildMaxHeap();
+        if (size > 0) {
+            buildMaxHeap();
+        }
     }
 
-    public MaxHeap(int[] arr, PerformanceTracker tracker){
-        this(arr);
+    public MaxHeap(int[] array, PerformanceTracker tracker) {
+        if (array == null) {
+            throw new IllegalArgumentException("Array cannot be null");
+        }
+        this.capacity = Math.max(array.length, 1);
+        this.size = array.length;
+        this.heap = Arrays.copyOf(array, capacity);
         this.tracker = tracker;
+
+        if (size > 0) {
+            buildMaxHeap();
+        }
     }
 
     public void buildMaxHeap(){
@@ -213,6 +227,10 @@ public class MaxHeap {
 
     public boolean isValidMaxHeap() {
         return isValidMaxHeapRecursive(0);
+    }
+
+    public int[] toArray() {
+        return Arrays.copyOf(heap, size);
     }
 
     /**
