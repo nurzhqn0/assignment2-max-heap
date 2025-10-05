@@ -80,7 +80,7 @@ public class MaxHeap {
     private void swap(int i, int j){
         if(tracker != null){
             tracker.incrementSwaps();
-            tracker.incrementArrayAccesses();
+            tracker.incrementArrayAccesses(2);
         }
         int temp = heap[i];
         heap[i] = heap[j];
@@ -107,36 +107,22 @@ public class MaxHeap {
 
     private void heapifyDown(int i) {
         while (true) {
-            int largest = i;
             int left = getLeftChild(i);
             int right = getRightChild(i);
 
-            if (left < size) {
-                if (tracker != null) {
-                    tracker.incrementComparisons();
-                    tracker.incrementArrayAccesses(2);
-                }
-                if (heap[left] > heap[largest]) {
-                    largest = left;
-                }
+            if (left >= size) break;
+
+            int largerChild = left;
+            if (right < size && heap[right] > heap[left]) {
+                largerChild = right;
+                if (tracker != null) tracker.incrementComparisons();
             }
 
-            if (right < size) {
-                if (tracker != null) {
-                    tracker.incrementComparisons();
-                    tracker.incrementArrayAccesses(2);
-                }
-                if (heap[right] > heap[largest]) {
-                    largest = right;
-                }
-            }
+            if (tracker != null) tracker.incrementComparisons();
+            if (heap[largerChild] <= heap[i]) break;
 
-            if (largest != i) {
-                swap(i, largest);
-                i = largest;
-            } else {
-                break;
-            }
+            swap(i, largerChild);
+            i = largerChild;
         }
     }
 
