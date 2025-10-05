@@ -278,4 +278,3 @@ GitHub Actions workflow includes:
 
 **Author:** nurzhqn0  
 **Course:** Design and Analysis of Algorithms  
-**Assignment:** Assignment 2 - Max-Heap Implementation
